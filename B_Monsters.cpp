@@ -3,8 +3,6 @@
 #include<iostream>
 #include<vector>
 #include<algorithm>
-#include<numeric>
-#include<climits>
 using namespace std;
 
 int main(){
@@ -12,46 +10,54 @@ int main(){
     cin >> t;
 
     while(t--){
-        long long n, k;
-        cin >> n >> k;
-        bool found = false;
-        int maxi = 0;
+        int n;
+        cin >> n;
+        long long k;
+        cin >> k;
+        vector<long long> mons(n);
 
-        vector<long long> v(n);
         for(int i = 0; i < n; i++){
-            int l;
-            cin >> l;
-            v[i] = l % k;
-            if(v[i] == 0){
-                v[i] = k;
+            cin >> mons[i];
+
+            long long a = mons[i]%k;
+            if(a == 0){
+                a = k;
+            }
+
+            mons[i] = a;
+        }
+
+        vector<pair<long long, int>> vp;
+        for(int i = 0; i < n; i++){
+            vp.push_back({mons[i], i});
+        }
+
+        sort(vp.begin(), vp.end());
+        reverse(vp.begin(), vp.end());
+        
+        int ind = n;
+        for(int i = 1; i < n; i++){
+            if(vp[i].first == vp[i - 1].first){
+                ind = min(ind, i - 1);
+            }
+            else{
+                if(ind < n){
+                    int j = i;
+                    reverse(vp.begin() + ind, vp.begin() + j);
+                }
+                ind = n;
             }
         }
 
-
-        vector<pair<int, int>> p;
-        for(int i = 0; i < n; i++){
-            p.push_back({v[i], i+1});
+        if(ind < n){
+            reverse(vp.begin() + ind, vp.end());
         }
 
-        sort(p.begin(), p.end());
-        reverse(p.begin(), p.end());
 
-        for (int i = 0; i < n; ) {
-            int j = i + 1;
 
-            while (j < n && p[j].first == p[i].first) {
-                j++;
-            }
-
-            reverse(p.begin() + i, p.begin() + j);
-
-            i = j;
+        for(auto x: vp){
+            cout << x.second + 1 << " ";
         }
-
-        for(auto x: p){
-            cout << x.second << " ";
-        }
-
         cout << endl;
     }
 }
