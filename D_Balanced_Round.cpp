@@ -1,3 +1,5 @@
+// Accepted
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -8,32 +10,34 @@ int main(){
     cin >> t;
 
     while(t--){
-        int n, k;
-        cin >> n >> k;
+        int n;
+        long long k;
+        cin >> n;
+        cin >> k;
 
-        vector <int> v(n);
-
+        vector<long long> v(n);
         for(int i = 0; i < n; i++){
             cin >> v[i];
         }
 
         sort(v.begin(), v.end());
 
-        int co = 0, maxC = 0;
+        int cou = 0;
+        int maxCou = 0;
 
         for(int i = 1; i < n; i++){
-            int d = v[i] - v[i - 1];
-            if(d <= k){
-                co++;
+            int diff = v[i] - v[i - 1];
+            if(diff <= k){
+                cou++;
             }
             else{
-                maxC = max(maxC, co);
-                co = 0;
+                maxCou = max(maxCou, cou);
+                cou = 0;
             }
         }
-        maxC = max(maxC, co);
-        maxC++;
 
-        cout << n - maxC << endl;
+        maxCou = max(maxCou, cou);
+
+        cout << n - maxCou -1 << endl;
     }
 }
